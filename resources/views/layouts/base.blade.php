@@ -8,7 +8,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>SoulScrypt</title>
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
-    @include('layouts.header')
+
+    @vite(['resources/css/app.css','resources/js/app.js'])
+    {{-- @include('layouts.header') --}}
+    
 </head>
 
 <body> 
