@@ -7,4 +7,4 @@
 {{-- DataTables --}}
 <link href="{{url('/js/DataTables/datatables.min.css')}}" rel="stylesheet">
  
-<script src="{{url('/js/DataTables/datatables.min.js')}}></script>
+<script src="{{url('/js/DataTables/datatables.min.js')}}"></script>
