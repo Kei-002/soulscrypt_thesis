@@ -11,12 +11,17 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
 
     @vite(['resources/css/app.css','resources/js/app.js'])
-    @include('layouts.header')
+    
+    {{-- <script src="{{url('/js/jquery-3.7.1.min.js')}}"></script> --}}
+    
     
 </head>
 
 <body> 
+    <script src="{{url('/js/assets/jquery-3.7.1.min.js')}}"></script>
+    @include('layouts.header')
     @yield('body')
+    @yield('script')
 </body>
 
 </html>

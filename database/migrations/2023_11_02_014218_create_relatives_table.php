@@ -16,9 +16,6 @@ return new class extends Migration
             $table->integer('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')
                 ->onDelete('cascade');
-            $table->integer('relationship_id')->unsigned();
-            $table->foreign('relationship_id')->references('id')->on('relationships')
-                ->onDelete('cascade');
             $table->string('first_name');
             $table->string('last_name');
             $table->string('gender');

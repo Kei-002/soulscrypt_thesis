@@ -14,11 +14,11 @@ return new class extends Migration
         Schema::create('relationships', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('relative_id')->unsigned();
-            $table->foreign('relative_id')->references('id')->on('relatives')
-                ->onDelete('cascade');
+            $table->foreign('relative_id')->references('id')->on('relatives');
+                // ->onDelete('cascade');
             $table->integer('occupant_id')->unsigned();
-            $table->foreign('occupant_id')->references('id')->on('grave_records')
-                ->onDelete('cascade');
+            $table->foreign('occupant_id')->references('id')->on('grave_records');
+                // ->onDelete('cascade');
         });
     }
 

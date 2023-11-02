@@ -1,8 +1,8 @@
 @extends('dashboard')
 @section('content')
 
-    <div class="p-4 sm:ml-64">
-        <div class="mt-14">
+    {{-- <div class="p-4 sm:ml-64"> --}}
+        {{-- <div class="mt-14"> --}}
             {{-- Table Header --}}
             <div class="bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div class="mb-1 w-full">
@@ -127,7 +127,7 @@
                 <div class="overflow-x-auto">
                     <div class="align-middle inline-block min-w-full">
                         <div class="shadow overflow-hidden">
-                            <table class="table-fixed min-w-full divide-y divide-gray-200" id = "user-table">
+                            <table class="table-fixed min-w-full divide-y divide-gray-200" id="dataTable">
                                 <thead class="bg-gray-100">
                                     <tr>
                                         <th scope="col" class="p-4">
@@ -475,5 +475,10 @@
                     </div>
                 </div>
             </div>
-        </div>
-    </div>
+        {{-- </div> --}}
+    {{-- </div> --}}
+
+        
+    <script src="{{url('/js/test.js')}}"></script>
+    
+@endsection
