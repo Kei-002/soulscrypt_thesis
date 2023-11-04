@@ -1,5 +1,5 @@
 
-@extends('layouts.base')
+@extends('base')
 @section('body')
 
 
