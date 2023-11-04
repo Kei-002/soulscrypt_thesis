@@ -10,8 +10,6 @@ class Relative extends Model
 {
     use HasFactory;
 
-    use softDeletes;
-
     protected $guarded = ['id'];
 
     public static $rules = [
