@@ -4,6 +4,7 @@
     {{-- <div class="p-4 sm:ml-64"> --}}
         {{-- <div class="mt-14"> --}}
             {{-- Table Header --}}
+            {{-- Table Header --}}
             <div class="bg-white block sm:flex items-center justify-between border-b border-gray-200 lg:mt-1.5">
                 <div class="mb-1 w-full">
                     <div class="mb-4">
@@ -127,7 +128,7 @@
                 <div class="overflow-x-auto">
                     <div class="align-middle inline-block min-w-full">
                         <div class="shadow overflow-hidden">
-                            <table class="table-fixed min-w-full divide-y divide-gray-200" id="dataTable">
+                            <table class="table-fixed min-w-full divide-y divide-gray-200" id = "user-table">
                                 <thead class="bg-gray-100">
                                     <tr>
                                         <th scope="col" class="p-4">
@@ -176,10 +177,8 @@
                                                 <div class="text-sm font-normal text-gray-500">test@email.com</div>
                                             </div>
                                         </td>
-                                        <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
-                                            Relative</td>
-                                        <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">
-                                            Philippines
+                                        <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">Relative</td>
+                                        <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">Philippines
                                         </td>
                                         <td class="p-4 whitespace-nowrap text-base font-normal text-gray-900">
                                             <div class="flex items-center">
@@ -343,7 +342,8 @@
                         <div class="items-center p-6 border-t border-gray-200 rounded-b">
                             <button
                                 class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
-                                type="submit" id="update_customer_button">Save all</button>
+                                type="submit"
+                                id="update_customer_button">Save all</button>
                         </div>
                         </form>
                     </div>
@@ -458,8 +458,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                     d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                             </svg>
-                            <h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">Are you sure you want to delete
-                                this
+                            <h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">Are you sure you want to delete this
                                 user?
                             </h3>
                             <a href="#"
@@ -478,7 +477,7 @@
         {{-- </div> --}}
     {{-- </div> --}}
 
-        
+    @section('script')   
     <script src="{{url('/js/test.js')}}"></script>
-    
+    @endsection
 @endsection
