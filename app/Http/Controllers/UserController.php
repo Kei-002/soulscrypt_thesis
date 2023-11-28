@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Relative;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -130,7 +131,7 @@ class UserController extends Controller
         } else {
             $account = Employee::where("user_id", $id)->firstOrFail();
         }
-        $user->name = $request->fname . " " . $request->lname;
+        $user->name = $request->first_name . " " . $request->last_name;
         $user->email = $request->email;
         $user->save();
 
@@ -169,6 +170,7 @@ class UserController extends Controller
             $user = User::findOrFail($id);
             if ($user->user_type === 'relative') {
                 $relative = Relative::where("user_id", $user->id)->firstOrFail();
+                $relationship = DB::table('relationships')->where('relative_id', $relative->id)->delete();
                 // $relative->pets()->delete();
             }
         } catch (\Exception $error) {

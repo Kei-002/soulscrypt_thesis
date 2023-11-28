@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RelativeController;
 use App\Http\Controllers\UserController;
@@ -22,11 +23,21 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::resource('user', UserController::class);
+// Route::resource('user', UserController::class);
 Route::post('/user-update/{id}', [UserController::class, 'updateUser']);
 
 Route::resource('employee', EmployeeController::class);
-Route::post('/employee-update/{id}', [EmployeeController::class, 'updateUser']);
+Route::post('/employee-update/{id}', [EmployeeController::class, 'updateEmployee']);
 
 Route::resource('relative', RelativeController::class);
-Route::post('/relative-update/{id}', [RelativeController::class, 'updateUser']);
+Route::post('/relative-update/{id}', [RelativeController::class, 'updateRelative']);
+
+// Test
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']);
+
+
+Route::middleware(['auth:api'])->group(function() {
+    Route::resource('user', UserController::class);
+    Route::post('logout', [AuthController::class, 'logout']);
+});
