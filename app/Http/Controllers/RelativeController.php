@@ -13,7 +13,7 @@ class RelativeController extends Controller
      */
     public function index()
     {
-        $data = Relative::all();
+        $data = Relative::with('user')->get();
         // return response($data, $status = 200);
         return response()->json($data);
     }
@@ -45,7 +45,7 @@ class RelativeController extends Controller
         $user->name = $input['first_name'] . ' ' . $input['last_name'];
         $user->email = $input['email'];
         $user->password = $input['password1'];
-        $user->user_type = $input['user_type'];
+        // $user->user_type = $input['user_type'];
         // $user->status = $input['status'];
         $user->save();
         // Send email after user is created
@@ -133,8 +133,8 @@ class RelativeController extends Controller
 
        $account->first_name = $request->first_name;
        $account->last_name = $request->last_name;
-       $account->addressline = $request->addressline;
-       $account->phone = $request->phone;
+       $account->address = $request->address;
+       $account->phonenum = $request->phonenum;
     //    $account->position = $request->position;
        $account->save();
 

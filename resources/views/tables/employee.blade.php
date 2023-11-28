@@ -47,7 +47,7 @@
                                 </li>
                             </ol>
                         </nav>
-                        <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">Manage All Users</h1>
+                        <h1 class="text-xl sm:text-2xl font-semibold text-gray-900">Manage Employees</h1>
                     </div>
                     <div class="sm:flex">
                         <div class="hidden sm:flex items-center sm:divide-x sm:divide-gray-100 mb-3 sm:mb-0">
@@ -128,28 +128,32 @@
                 <div class="overflow-x-auto">
                     <div class="align-middle inline-block min-w-full">
                         <div class="shadow overflow-hidden">
-                            <table class="table-fixed min-w-full divide-y divide-gray-200" id = "user_table">
+                            <table class="table-fixed min-w-full divide-y divide-gray-200" id = "employee_table">
                                 <thead class="bg-gray-100">
                                     <tr>
-                                        <th scope="col" class="p-4">
+                                        {{-- <th scope="col" class="p-4">
                                             <div class="flex items-center">
                                                 <input id="checkbox-all" aria-describedby="checkbox-1" type="checkbox"
                                                     class="bg-gray-50 border-gray-300 focus:ring-3 focus:ring-cyan-200 h-4 w-4 rounded">
                                                 <label for="checkbox-all" class="sr-only">checkbox</label>
                                             </div>
-                                        </th>
+                                        </th> --}}
+                                        {{-- <th scope="col"
+                                            class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Image
+                                        </th> --}}
                                         <th scope="col"
                                             class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                             Name
+                                        </th>
+                                        <th scope="col"
+                                            class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
+                                            Position
                                         </th>
                                         {{-- <th scope="col"
                                             class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                             Role
                                         </th> --}}
-                                        <th scope="col"
-                                            class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
-                                            Role
-                                        </th>
                                         <th scope="col"
                                             class="p-4 text-left text-xs font-medium text-gray-500 uppercase">
                                             Phone Number
@@ -162,26 +166,31 @@
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody class="bg-white divide-y divide-gray-200" id="user_table_body">
+                                <tbody class="bg-white divide-y divide-gray-200" id="employee_table_body">
                                     {{-- {{< users.inline >}} --}}
                                     {{-- {{- range (index $.Site.Data "users") }} --}}
                                     <tr class="hover:bg-gray-100">
-                                        <td class="p-4 w-4">
+                                        {{-- <td class="p-4 w-4">
                                             <div class="flex items-center">
                                                 <input id="checkbox-1" aria-describedby="checkbox-1" type="checkbox"
                                                     class="bg-gray-50 border-gray-300 focus:ring-3 focus:ring-cyan-200 h-4 w-4 rounded">
                                                 <label for="checkbox-1" class="sr-only">checkbox</label>
                                             </div>
-                                        </td>
+                                        </td> --}}
+                                        {{-- <td class="p-4 w-4">
+                                            <div class="flex items-center">
+                                                <img class="h-10 w-10 rounded-full" src="/images/users/test"
+                                                alt="test avatar">
+                                            </div>
+                                        </td> --}}
                                         <td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
-                                            <img class="h-10 w-10 rounded-full" src="/images/users/test"
-                                                alt="avatar">
+                                            
                                             <div class="text-sm font-normal text-gray-500">
                                                 <div class="text-base font-semibold text-gray-900">Khen Vargas</div>
                                                 <div class="text-sm font-normal text-gray-500">test@email.com</div>
                                             </div>
                                         </td>
-                                        <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">Relative</td>
+                                        <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">Administrator</td>
                                         {{-- <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">Relative</td> --}}
                                         <td class="p-4 whitespace-nowrap text-base font-medium text-gray-900">09123456789
                                         </td>
@@ -277,8 +286,8 @@
             </div>
 
             <!-- Edit User Modal -->
-            <div  aria-hidden="true" class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full"
-                id="user-modal">
+            <div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full"
+                id="employee-modal">
                 <div class="relative w-full max-w-2xl px-4 h-full md:h-auto">
                     <!-- Modal content -->
                     <div class="bg-white rounded-lg shadow relative">
@@ -300,46 +309,82 @@
                         </div>
                         <!-- Modal body -->
                         <div class="p-6 space-y-6">
-                            <form id="update_user_form" action="#" method="#" enctype="multipart/form-data">
+                            <form id="update_employee_form" action="#" method="#" enctype="multipart/form-data">
+                                {{-- @csrf --}}
                                 <div class="grid grid-cols-6 gap-6">
-                                    <input type="hidden" name="user-id" id="edit-user-id">
+                                    <input type="hidden" name="employee_id" id="edit_employee_id">
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="first-name" class="text-sm font-medium text-gray-900 block mb-2">First
                                             Name</label>
-                                        <input type="text" name="first_name" id="edit-first-name"
+                                        <input type="text" name="first_name" id="edit_first_name"
                                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                             placeholder="Bonnie" required>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
-                                        <label for="last-name" class="text-sm font-medium text-gray-900 block mb-2">Last
+                                        <label for="last_name" class="text-sm font-medium text-gray-900 block mb-2">Last
                                             Name</label>
-                                        <input type="text" name="last_name" id="edit-last-name"
+                                        <input type="text" name="last_name" id="edit_last_name"
                                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                             placeholder="Green" required>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
+                                        <label for="company"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Phone Number</label>
+                                        <input type="number" name="phonenum" id="edit_phonenum"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                                            placeholder="123456" required>
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="company"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Address</label>
+                                        <input type="text" name="address" id="edit_address"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                                            placeholder="123456" required>
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="company"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Gender</label>
+                                        <select id="edit_gender" name="gender" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5">
+                                            {{-- <option selected>Choose gender</option> --}}
+                                            <option selected value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                    
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
                                         <label for="email"
                                             class="text-sm font-medium text-gray-900 block mb-2">Email</label>
-                                        <input type="email" name="email" id="edit-email"
+                                        <input type="email" name="email" id="edit_email"
                                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                             placeholder="example@company.com" required>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
-                                        <label for="phonenum"
-                                            class="text-sm font-medium text-gray-900 block mb-2">Phone
-                                            Number</label>
-                                        <input type="number" name="phonenum" id="edit-phone-num"
+                                        <label for="position"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Position</label>
+                                        <input type="text" name="position" id="edit_position"
                                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                                            placeholder="e.g. +(12)3456 789" required>
+                                            placeholder="Administrator" required>
+                                    </div>
+
+                                    {{-- <div class="col-span-6 sm:col-span-3">
+                                        <label for="phone-number"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Password
+                                            </label>
+                                        <input type="password" name="password1" id="edit_password1"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                                            placeholder="Password" required>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
-
-                                        <label for="address"
-                                            class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
-                                        <textarea name="address" id="edit-addressline" rows="4"
-                                            class="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                                            placeholder="Write address here"></textarea>
-                                    </div>
+                                        <label for="phone-number"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Confirm Password
+                                            </label>
+                                        <input type="password" name="password2" id="edit_password2"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                                            placeholder="Confirm Password" required>
+                                    </div> --}}
                                 </div>
                         </div>
                         <!-- Modal footer -->
@@ -347,7 +392,7 @@
                             <button
                                 class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 type="submit"
-                                id="update_user_button">Save all</button>
+                                id="update_employee_button">Save all</button>
                         </div>
                         </form>
                     </div>
@@ -378,21 +423,48 @@
                         </div>
                         <!-- Modal body -->
                         <div class="p-6 space-y-6">
-                            <form action="#">
+                            <form action="#" id="add_user_form">
                                 <div class="grid grid-cols-6 gap-6">
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="first-name" class="text-sm font-medium text-gray-900 block mb-2">First
                                             Name</label>
-                                        <input type="text" name="first-name" id="first-name"
+                                        <input type="text" name="first_name" id="first_name"
                                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                             placeholder="Bonnie" required>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
-                                        <label for="last-name" class="text-sm font-medium text-gray-900 block mb-2">Last
+                                        <label for="last_name" class="text-sm font-medium text-gray-900 block mb-2">Last
                                             Name</label>
-                                        <input type="text" name="last-name" id="last-name"
+                                        <input type="text" name="last_name" id="last_name"
                                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                             placeholder="Green" required>
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="company"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Phone Number</label>
+                                        <input type="number" name="phonenum" id="phonenum"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                                            placeholder="123456" required>
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="company"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Address</label>
+                                        <input type="text" name="address" id="address"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                                            placeholder="123456" required>
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                        <label for="company"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Gender</label>
+                                        <select id="gender" name="gender" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5">
+                                            {{-- <option selected>Choose gender</option> --}}
+                                            <option selected value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                
+                                    </div>
+                                    <div class="col-span-6 sm:col-span-3">
+                                    
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
                                         <label for="email"
@@ -402,32 +474,36 @@
                                             placeholder="example@company.com" required>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
+                                        <label for="position"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Position</label>
+                                        <input type="text" name="position" id="position"
+                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
+                                            placeholder="Administrator" required>
+                                    </div>
+
+                                    <div class="col-span-6 sm:col-span-3">
                                         <label for="phone-number"
-                                            class="text-sm font-medium text-gray-900 block mb-2">Phone
-                                            Number</label>
-                                        <input type="number" name="phone-number" id="phone-number"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Password
+                                            </label>
+                                        <input type="password" name="password1" id="password1"
                                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                                            placeholder="e.g. +(12)3456 789" required>
+                                            placeholder="Password" required>
                                     </div>
                                     <div class="col-span-6 sm:col-span-3">
-                                        <label for="department"
-                                            class="text-sm font-medium text-gray-900 block mb-2">Department</label>
-                                        <input type="text" name="department" id="department"
+                                        <label for="phone-number"
+                                            class="text-sm font-medium text-gray-900 block mb-2">Confirm Password
+                                            </label>
+                                        <input type="password" name="password2" id="password2"
                                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                                            placeholder="Development" required>
+                                            placeholder="Confirm Password" required>
                                     </div>
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="company"
-                                            class="text-sm font-medium text-gray-900 block mb-2">Company</label>
-                                        <input type="number" name="company" id="company"
-                                            class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
-                                            placeholder="123456" required>
-                                    </div>
+                                    
+                        
                                 </div>
                         </div>
                         <!-- Modal footer -->
                         <div class="items-center p-6 border-t border-gray-200 rounded-b">
-                            <button
+                            <button id="add_user_button"
                                 class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm px-5 py-2.5 text-center"
                                 type="submit">Add user</button>
                         </div>
@@ -438,7 +514,7 @@
 
             <!-- Delete User Modal -->
             <div class="hidden overflow-x-hidden overflow-y-auto fixed top-4 left-0 right-0 md:inset-0 z-50 justify-center items-center h-modal sm:h-full"
-                id="delete-user-modal">
+                id="delete-employee-modal">
                 <div class="relative w-full max-w-md px-4 h-full md:h-auto">
                     <!-- Modal content -->
                     <div class="bg-white rounded-lg shadow relative">
@@ -465,11 +541,11 @@
                             <h3 class="text-xl font-normal text-gray-500 mt-5 mb-6">Are you sure you want to delete this
                                 user?
                             </h3>
-                            <a href="#" id="delete_sure"
+                            <a href="#" id="delete-employee-sure"
                                 class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base inline-flex items-center px-3 py-2.5 text-center mr-2">
                                 Yes, I'm sure
                             </a>
-                            <a href="#" 
+                            <a href="#"
                                 class="text-gray-900 bg-white hover:bg-gray-100 focus:ring-4 focus:ring-cyan-200 border border-gray-200 font-medium inline-flex items-center rounded-lg text-base px-3 py-2.5 text-center"
                                 data-modal-toggle="delete-user-modal">
                                 No, cancel
@@ -482,6 +558,6 @@
     {{-- </div> --}}
 
     @section('script')   
-    <script src="{{url('/js/test.js')}}"></script>
+    <script src="{{url('/js/employee_table.js')}}"></script>
     @endsection
 @endsection

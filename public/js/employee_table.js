@@ -1,8 +1,9 @@
 
 $(document).ready(() => {
-    const $targetEl = document.getElementById('user-modal');
-    const modal = new Modal($targetEl);
-    $("#user_table").DataTable({
+    
+
+    
+    $("#employee_table").DataTable({
         info: false,
         searching: false,
         ordering: false,
@@ -11,7 +12,7 @@ $(document).ready(() => {
         // info: true,
         stateSave: true,
         ajax: {
-            url: "http://127.0.0.1:8000/api/user",
+            url: "/api/employee",
             dataSrc: "",
             // beforeSend: function (xhr) {
             //     xhr.setRequestHeader(
@@ -23,41 +24,54 @@ $(document).ready(() => {
         order: [0, "dec"],
         // data: data,
         columns: [
-            {
-                data: null,
-                render: function (data, type, row) {
-                    return (
-                            `<td class="p-4 w-4">
-                            <div class="flex items-center">
-                                <input id="${data.id}" aria-describedby="checkbox-1" type="checkbox"
-                                    class="bg-gray-50 border-gray-300 focus:ring-3 focus:ring-cyan-200 h-4 w-4 rounded">
-                                <label for="checkbox-1" class="sr-only">checkbox</label>
-                            </div>
-                        </td>`
-                    );
-                },
-            },
+            // {
+            //     data: null,
+            //     render: function (data, type, row) {
+            //         console.log(data);
+            //         return (
+            //                 `<td class="p-4 w-4">
+            //                 <div class="flex items-center">
+            //                     <input id="${data.id}" aria-describedby="checkbox-1" type="checkbox"
+            //                         class="bg-gray-50 border-gray-300 focus:ring-3 focus:ring-cyan-200 h-4 w-4 rounded">
+            //                     <label for="checkbox-1" class="sr-only">checkbox</label>
+            //                 </div>
+            //             </td>`
+            //         );
+            //     },
+            // },
+            // {
+            //     data: null,
+            //     render: function (data, type, row) {
+            //         return (
+            //                 ` <td class="p-4 w-4">
+            //                 <div class="flex items-center">
+            //                     <img class="h-10 w-10 rounded-full" src="${data.img_path}"
+            //                     alt="test avatar">
+            //                 </div>
+            //             </td>`
+            //         );
+            //     },
+            // },
             {
                 data: null,
                 render: function (data, type, row) {
                     return (
                             `<td class="p-4 flex items-center whitespace-nowrap space-x-6 mr-12 lg:mr-0">
-                            <img class="h-10 w-10 rounded-full" src="/images/users/test"
-                                alt="avatar">
+
                             <div class="text-sm font-normal text-gray-500">
-                                <div class="text-base font-semibold text-gray-900">${data.name}</div>
+                                <div class="text-base font-semibold text-gray-900">${data.first_name} ${data.last_name}</div>
                                 <div class="text-sm font-normal text-gray-500">${data.email}</div>
                             </div>
                         </td>`
                     );
                 },
             },
-            { data: "user_type" },
+            { data: "position" },
             { data: "phonenum" },
             {
                 data: null,
                 render: function (data, type, row) {
-                    if (data.status == 'verified')  {
+                    if (data.user.status == 'verified')  {
                         return (
                             `<td class="p-4 whitespace-nowrap text-base font-normal text-gray-900">
                             <div class="flex items-center">
@@ -85,7 +99,7 @@ $(document).ready(() => {
                 render: function (data, type, row) {
                     return (
                        `<td class="p-4 whitespace-nowrap space-x-2">
-                       <button type="button" data-modal-toggle="user-modal" id="user_edit" data-id="${data.id}"
+                       <button type="button" data-modal-toggle="employee-modal" id="employee_edit" data-id="${data.id}"
                            class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
                            <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20"
                                xmlns="http://www.w3.org/2000/svg">
@@ -98,7 +112,7 @@ $(document).ready(() => {
                            </svg>
                            Edit user
                        </button>
-                       <button type="button" data-modal-toggle="delete-user-modal" id="user_delete" data-id="${data.id}"
+                       <button type="button" data-modal-toggle="delete-employee-modal" id="employee_delete" data-id="${data.id}"
                            class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm inline-flex items-center px-3 py-2 text-center">
                            <svg class="mr-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20"
                                xmlns="http://www.w3.org/2000/svg">
@@ -112,20 +126,14 @@ $(document).ready(() => {
                     );
                 },
             },
-            // {
-            //     data: null,
-            //     render: function (data, type, row) {
-            //         return (
-            //             "<a href='#' class='user_delete' id='user_delete' data-id=" +
-            //             data.id +
-            //             "><i class='fa-solid fa-trash-can' aria-hidden='true' style='font-size:24px; color:red;'></a></i>"
-            //         );
-            //     },
-            // },
         ],
     });
 
-    $("#user_table #user_table_body").on("click", "button#user_edit", function (e) {
+
+    const $targetEl = document.getElementById('employee-modal');
+    const modal = new Modal($targetEl);
+
+    $("#employee_table #employee_table_body").on("click", "button#employee_edit", function (e) {
         e.preventDefault();
         // $("#user-modal").modal("show");
         var id = $(this).data("id");
@@ -139,29 +147,32 @@ $(document).ready(() => {
             processData: false, // Important!
             contentType: false,
             cache: false,
-            url: "/api/user/" + id + "/edit",
+            url: "/api/employee/" + id + "/edit",
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
             },
-            beforeSend: function (xhr) {
-                xhr.setRequestHeader(
-                    "Authorization",
-                    "Bearer " + localStorage.getItem("token")
-                );
-            },
+            // beforeSend: function (xhr) {
+            //     xhr.setRequestHeader(
+            //         "Authorization",
+            //         "Bearer " + localStorage.getItem("token")
+            //     );
+            // },
             dataType: "json",
             success: function (data) {
                 // console.log(data);
-                $user = data.user;
+                $user = data.account.user;
                 $account = data.account;
-                // console.log($user);
+                console.log($user);
                 // console.log($account);
-                $("#edit-user-id").val($user.id);
-                $("#edit-first-name").val($account.first_name);
-                $("#edit-last-name").val($account.last_name);
-                $("#edit-addressline").val($account.address);
-                $("#edit-phone-num").val($account.phonenum);
-                $("#edit-email").val($user.email);
+                $("#edit_employee_id").val($account.id);
+                $("#edit_first_name").val($account.first_name);
+                $("#edit_last_name").val($account.last_name);
+                $("#edit_address").val($account.address);
+                $("#edit_phonenum").val($account.phonenum);
+                $("#edit_email").val($user.email);
+                // $(`#edit_gender option[value=${$account.gender}]`).attr('selected','selected');
+                $("#edit_gender").val($account.gender);
+                $("#edit_position").val($account.position);
 
                 // $("#edit-role option").each(function () {
                 //     if ($(this).val() == $user.role) {
@@ -169,7 +180,7 @@ $(document).ready(() => {
                 //     }
                 // });
 
-                console.log($user.role);
+                console.log($account.position);
                 // if ($user.role == "admin") {
                 //     $("#edit-role").val("employee");
                 // } else {
@@ -182,17 +193,17 @@ $(document).ready(() => {
                 // $("#edit-role").val($user.role).change();
             },
             error: function (error) {
-                console.log("error");
+                console.log(error);
             },
         });
     });
 
 
-    $("#update_user_button").on("click", function (e) {
+    $("#update_employee_button").on("click", function (e) {
         e.preventDefault();
-        var id = $("#edit-user-id").val();
+        var id = $("#edit_employee_id").val();
         console.log(id);
-        var data = $("#update_user_form")[0];
+        var data = $("#update_employee_form")[0];
         console.log(data);
 
         let formData = new FormData(data);
@@ -204,7 +215,7 @@ $(document).ready(() => {
             // cache: false,
             contentType: false,
             processData: false,
-            url: "/api/user-update/" + id,
+            url: "/api/employee-update/" + id,
             data: formData,
             headers: {
                 "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
@@ -220,7 +231,7 @@ $(document).ready(() => {
                 // console.log(data.img_path);
                 // $("#update_user_modal").modal("hide");
                 modal.hide();
-                $("#user_table").DataTable().ajax.reload();
+                $("#employee_table").DataTable().ajax.reload();
                 console.log("data", data);
                 // console.log("message", data.message);
                 // console.log("request", data.request);
@@ -234,24 +245,24 @@ $(document).ready(() => {
 
 
 
-    const $deleteModal = document.getElementById('delete-user-modal');
+    const $deleteModal = document.getElementById('delete-employee-modal');
     const deleteModal = new Modal($deleteModal);
-    $("#user_table #user_table_body").on("click", "button#user_delete", function (e) {
+    $("#employee_table #employee_table_body").on("click", "button#employee_delete", function (e) {
         e.preventDefault();
         // $("#user-modal").modal("show");
         var id = $(this).data("id");
         // var id = $(e.relatedTarget).attr("id");
-        var table = $("#user_table").DataTable();
+        var table = $("#employee_table").DataTable();
         var id = $(this).data("id");
         var $row = $(this).closest("tr");
         console.log(id);
         deleteModal.show();
-        $('#delete_sure').attr('data-id' , id); 
-        $('#delete-user-modal').find('#delete_sure').click(function () {
+        // $('#delete_sure').attr('data-id' , id); 
+        $('#delete-employee-modal').find('#delete-employee-sure').click(function () {
             console.log("this is a test")
             $.ajax({
                 type: "DELETE",
-                url: "/api/user/" + id,
+                url: "/api/employee/" + id,
                 headers: {
                     "X-CSRF-TOKEN": $(
                         'meta[name="csrf-token"]'
@@ -280,130 +291,56 @@ $(document).ready(() => {
                 },
             });
         })
-        // $.ajax({
-        //     type: "GET",
-        //     enctype: "multipart/form-data",
-        //     processData: false, // Important!
-        //     contentType: false,
-        //     cache: false,
-        //     url: "/api/user/" + id + "/edit",
-        //     headers: {
-        //         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-        //     },
-        //     beforeSend: function (xhr) {
-        //         xhr.setRequestHeader(
-        //             "Authorization",
-        //             "Bearer " + localStorage.getItem("token")
-        //         );
-        //     },
-        //     dataType: "json",
-        //     success: function (data) {
-        //         // console.log(data);
-        //         $user = data.user;
-        //         $account = data.account;
-        //         // console.log($user);
-        //         // console.log($account);
-        //         $("#edit-user-id").val($user.id);
-        //         $("#edit-first-name").val($account.first_name);
-        //         $("#edit-last-name").val($account.last_name);
-        //         $("#edit-addressline").val($account.address);
-        //         $("#edit-phone-num").val($account.phonenum);
-        //         $("#edit-email").val($user.email);
-
-        //         // $("#edit-role option").each(function () {
-        //         //     if ($(this).val() == $user.role) {
-        //         //         $(this).prop("selected", true);
-        //         //     }
-        //         // });
-
-        //         console.log($user.role);
-        //         // if ($user.role == "admin") {
-        //         //     $("#edit-role").val("employee");
-        //         // } else {
-        //         //     $("#edit-role").val($user.role);
-        //         // }
-
-        //         // $("#img_path").html(
-        //         //     `<img src="${data.img_path}" width="100" class="img-fluid img-thumbnail">`);
-        //         // $("#dispCustomer").attr("src", data.img_path);
-        //         // $("#edit-role").val($user.role).change();
-        //     },
-        //     error: function (error) {
-        //         console.log("error");
-        //     },
-        // });
+      
     });
 
-    // $("#delete-user-modal").on("click", "a#delete_sure", function (e) {
-    //     e.preventDefault();
-    //     // $("#user-modal").modal("show");
-    //     var id = $(this).data("id");
-    //     // var id = $(e.relatedTarget).attr("id");
-    //     console.log(id);
-    //     var table = $("#user_table").DataTable();
-    //     var id = $(this).data("id");
-    //     var $row = $(this).closest("tr");
 
 
-    //     // deleteModal.show();
-    //     // $('#delete_sure').attr('data-id' , id); 
-    //     // $.ajax({
-    //     //     type: "GET",
-    //     //     enctype: "multipart/form-data",
-    //     //     processData: false, // Important!
-    //     //     contentType: false,
-    //     //     cache: false,
-    //     //     url: "/api/user/" + id + "/edit",
-    //     //     headers: {
-    //     //         "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
-    //     //     },
-    //     //     beforeSend: function (xhr) {
-    //     //         xhr.setRequestHeader(
-    //     //             "Authorization",
-    //     //             "Bearer " + localStorage.getItem("token")
-    //     //         );
-    //     //     },
-    //     //     dataType: "json",
-    //     //     success: function (data) {
-    //     //         // console.log(data);
-    //     //         $user = data.user;
-    //     //         $account = data.account;
-    //     //         // console.log($user);
-    //     //         // console.log($account);
-    //     //         $("#edit-user-id").val($user.id);
-    //     //         $("#edit-first-name").val($account.first_name);
-    //     //         $("#edit-last-name").val($account.last_name);
-    //     //         $("#edit-addressline").val($account.address);
-    //     //         $("#edit-phone-num").val($account.phonenum);
-    //     //         $("#edit-email").val($user.email);
+    const $createModal = document.getElementById('add-user-modal');
+    const createModal = new Modal($createModal);
+    
+    $("#add_user_button").on("click", function (e) {
+        e.preventDefault();
+        var data = $("#add_user_form")[0];
+        console.log(data);
+        let formData = new FormData(data);
+        console.log(formData);
+        for (var pair of formData.entries()) {
+            console.log(pair[0] + "," + pair[1]);
+        }
 
-    //     //         // $("#edit-role option").each(function () {
-    //     //         //     if ($(this).val() == $user.role) {
-    //     //         //         $(this).prop("selected", true);
-    //     //         //     }
-    //     //         // });
+        var data = $("#createform").serialize();
+        console.log(data);
+        $.ajax({
+            type: "POST",
+            url: "/api/employee",
+            data: formData,
+            contentType: false,
+            processData: false,
 
-    //     //         console.log($user.role);
-    //     //         // if ($user.role == "admin") {
-    //     //         //     $("#edit-role").val("employee");
-    //     //         // } else {
-    //     //         //     $("#edit-role").val($user.role);
-    //     //         // }
+            headers: {
+                "X-CSRF-TOKEN": $('meta[name="csrf-token"]').attr("content"),
+            },
+            // beforeSend: function (xhr) {
+            //     xhr.setRequestHeader(
+            //         "Authorization",
+            //         "Bearer " + localStorage.getItem("token")
+            //     );
+            // },
 
-    //     //         // $("#img_path").html(
-    //     //         //     `<img src="${data.img_path}" width="100" class="img-fluid img-thumbnail">`);
-    //     //         // $("#dispCustomer").attr("src", data.img_path);
-    //     //         // $("#edit-role").val($user.role).change();
-    //     //     },
-    //     //     error: function (error) {
-    //     //         console.log("error");
-    //     //     },
-    //     // });
-    // });
-
-
-
-
+            dataType: "json",
+            success: function (data) {
+                console.log(data);
+                createModal.hide();
+                // toastr.success(data.message);
+                // var $tableData = $("#userTable").DataTable();
+                $("#employee_table").DataTable().ajax.reload();
+            },
+            error: function (error) {
+                console.log(error);
+            },
+        });
+    });
 
 
 
