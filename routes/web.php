@@ -15,7 +15,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('auth.login');
+    return view('welcome');
 });
 
 Route::get('/dashboard', function () {
@@ -38,6 +38,6 @@ Route::get('/dashboard/relatives', function () {
 // Route::post('/register', [AuthController::class, 'register']);
 // Route::post('/logout', [AuthController::class, 'logout']);
 
-
+// Route::post('me', [AuthController::class, 'profile']);
 Route::view('/login', 'auth.login');
 Route::view('/register', 'auth.register');

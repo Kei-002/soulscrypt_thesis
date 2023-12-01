@@ -37,6 +37,17 @@ class AuthController extends Controller
         return response()->json(auth()->user());
     }
 
+    public function me() {
+        $currentUser = auth()->user();
+
+        if (count((array)$currentUser) > 0) {
+            return response()->json(['status' => 'success', 'user' => $currentUser]);
+        } else {
+            return response()->json(['status' => 'fail'], 401);
+        }
+        // return response()->json(auth()->user());
+    }
+
     public function login(Request $request)
     {
       
@@ -48,6 +59,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
+        Auth::user();
         return $this->createNewToken($token);
 
         // $user = User::where('email', $request->email)->first();

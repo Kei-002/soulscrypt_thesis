@@ -1,8 +1,5 @@
 
 $(document).ready(() => {
-    
-
-    
     $("#relative_table").DataTable({
         info: false,
         searching: false,
@@ -14,12 +11,12 @@ $(document).ready(() => {
         ajax: {
             url: "/api/relative",
             dataSrc: "",
-            // beforeSend: function (xhr) {
-            //     xhr.setRequestHeader(
-            //         "Authorization",
-            //         "Bearer " + localStorage.getItem("token")
-            //     );
-            // },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(
+                    "Authorization",
+                    "Bearer " + localStorage.getItem("token")
+                );
+            },
         },
         order: [0, "dec"],
         // data: data,
@@ -172,7 +169,7 @@ $(document).ready(() => {
                 $("#edit_phonenum").val($account.phonenum);
                 $("#edit_email").val($user.email);
                 // $(`#edit_gender option[value=${$account.gender}]`).attr('selected','selected');
-                $("#edit_gender").val($account.gender);
+                // $("#edit_gender").val($account.gender);
                 $("#edit_position").val($account.position);
 
                 // $("#edit-role option").each(function () {

@@ -171,7 +171,7 @@ $(document).ready(() => {
                 $("#edit_phonenum").val($account.phonenum);
                 $("#edit_email").val($user.email);
                 // $(`#edit_gender option[value=${$account.gender}]`).attr('selected','selected');
-                $("#edit_gender").val($account.gender);
+                // $("#edit_gender").val($account.gender);
                 $("#edit_position").val($account.position);
 
                 // $("#edit-role option").each(function () {

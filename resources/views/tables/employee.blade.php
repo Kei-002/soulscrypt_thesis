@@ -341,16 +341,7 @@
                                             class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5"
                                             placeholder="123456" required>
                                     </div>
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="company"
-                                            class="text-sm font-medium text-gray-900 block mb-2">Gender</label>
-                                        <select id="edit_gender" name="gender" class="shadow-sm bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-cyan-600 focus:border-cyan-600 block w-full p-2.5">
-                                            {{-- <option selected>Choose gender</option> --}}
-                                            <option selected value="male">Male</option>
-                                            <option value="female">Female</option>
-                                        </select>
-                                
-                                    </div>
+                                    
                                     <div class="col-span-6 sm:col-span-3">
                                     
                                     </div>

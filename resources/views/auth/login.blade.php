@@ -1,9 +1,5 @@
 @extends('layouts.navbar')
-
 @section('content')
-
-
-
 <div class="mx-auto md:h-screen flex flex-col justify-center items-center px-6 pt-8 pt:mt-0">
     {{-- <a href="#" class="text-2xl font-semibold flex justify-center items-center mb-8 lg:mb-10">
         <img src="/images/logo.svg" class="h-10 mr-4" alt="Windster Logo">
@@ -15,7 +11,7 @@
             <h2 class="text-2xl lg:text-3xl font-bold text-gray-900">
                 Sign in to platform
             </h2>
-            <form class="mt-8 space-y-6" action="#">
+            <form id="login_form" class="mt-8 space-y-6" action="#" enctype="multipart/form-data">
                 <div>
                     <label for="
                     email" class="text-sm font-medium text-gray-900 block mb-2">Your email</label>
@@ -34,7 +30,7 @@
                     </div>
                     <a href="#" class="text-sm text-teal-500 hover:underline ml-auto">Lost Password?</a>
                 </div>
-                <button type="submit" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center">Login to your account</button>
+                <button id="login_button" type="submit" class="text-white bg-cyan-600 hover:bg-cyan-700 focus:ring-4 focus:ring-cyan-200 font-medium rounded-lg text-base px-5 py-3 w-full sm:w-auto text-center">Login to your account</button>
                 <div class="text-sm font-medium text-gray-500">
                     Not registered? <a href="{{ url('register') }}" class="text-teal-500 hover:underline">Create account</a>
                 </div>
@@ -42,4 +38,7 @@
         </div>
     </div>
 </div>
+    @section('script')   
+        <script src="{{url('/js/auth/login.js')}}"></script>
+    @endsection
 @endsection

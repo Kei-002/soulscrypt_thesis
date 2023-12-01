@@ -32,10 +32,12 @@ Route::post('/employee-update/{id}', [EmployeeController::class, 'updateEmployee
 
 Route::resource('relative', RelativeController::class);
 Route::post('/relative-update/{id}', [RelativeController::class, 'updateRelative']);
+Route::post('me', [AuthController::class, 'me']);
 
 Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
     Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
     Route::post('register', [AuthController::class, 'register']);
     Route::post('profile', [AuthController::class, 'profile']);
+    
 });
