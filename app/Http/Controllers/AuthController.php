@@ -12,42 +12,50 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
-
+use Validator;
 class AuthController extends Controller
 {
     //
     use HttpResponses;
 
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except'=> ['login', 'register']]);
+    }
+
+    public function createNewToken($token) {
+        return response()->json([
+            'access_token' => $token,
+            'user'=> auth()->user(),
+            'token_type' => 'bearer',
+            'expires_in' => auth('api')->factory()->getTTL() * 60
+        ]);
+    }
+
+    // View user token information
+    public function profile() {
+        return response()->json(auth()->user());
+    }
+
     public function login(Request $request)
     {
-        // Log::alert($request);
-        // $request->validate($request->all());
+      
+        // Get only the email and password from the form
+        $credentials = $request->only(['email', 'password']);
 
-        // if (Auth::attempt($request)) {
-        //     $user = Auth::user();
-        //     $token = md5(time()).".".md5($request->email);
-        //     $user->forceFill([
-        //         'api_token' => $token
-        //     ])->save();
-        //     return response()->json([
-        //         'token' => $token
-        //     ]);
-        // }
 
-        // return response()->json([
-        //     'message' => 'Credentials does not match our records'
-        // ]);
-
-        if (!Auth::attempt($request->only(['email', 'password']))) {
-            return $this->error('', 'Credentials do not match', 401);
+        if (! $token = auth()->attempt($credentials)) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        $user = User::where('email', $request->email)->first();
-        $role = $user->role;
-        return $this->success(['user' => $user,
-            'role' => $role,
-            'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
-        ]);
+        return $this->createNewToken($token);
+
+        // $user = User::where('email', $request->email)->first();
+        // $role = $user->role;
+        // return $this->success(['user' => $user,
+        //     'role' => $role,
+        //     'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+        // ]);
     }
 
     public function register(Request $request)
@@ -58,6 +66,7 @@ class AuthController extends Controller
             'email'=>'required|email|unique:users',
             'password'=>'required|confirmed',
         ]);
+
         $full_name = $request->first_name . " " . $request->last_name;
 
         $user = User::create([
@@ -67,7 +76,7 @@ class AuthController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        $customer = Relative::create([
+        $relative = Relative::create([
             'user_id' => $user->id,
             'email' => $request->email,
             'first_name' => $request->first_name,
@@ -77,34 +86,19 @@ class AuthController extends Controller
             'phonenum' => $request->phonenum,
         ]);
 
-        // $pet = Pet::create([
-        //     'pet_name' => $user->id,
-        //     'age' => $request->age,
-        //     'customer_id' => $customer->id,
-        // ]);
-
-        Auth::login($user);
+        // Auth::login($user);
 
         return $this->success([
             'user' => $user,
-            'role' => 'customer',
-            'customer' => $customer,
-            'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
+            'relative' => $relative,
+            // 'token' => $user->createToken('API Token of ' . $user->name)->plainTextToken
         ]);
     }
 
     public function logout(Request $request)
     {
-
-        // $request->user()->forceFill([
-        //     'api_token' => null
-        // ])->save();
-
-        $user = User::find(Auth::id());
-        $user->tokens()->delete();
-        auth()->guard('web')->logout();
-        return $this->success(['message' => "User successfully logged out.",
-        ]);
+        auth()->logout();
+        return $this->success(['message'=> "User successfully logged out."]);
     }
 
 

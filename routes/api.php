@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\RelativeController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -32,12 +33,9 @@ Route::post('/employee-update/{id}', [EmployeeController::class, 'updateEmployee
 Route::resource('relative', RelativeController::class);
 Route::post('/relative-update/{id}', [RelativeController::class, 'updateRelative']);
 
-// Test
-Route::post('login', [AuthController::class, 'login']);
-Route::post('register', [AuthController::class, 'register']);
-
-
-Route::middleware(['auth:api'])->group(function() {
-    Route::resource('user', UserController::class);
+Route::group(['middleware' => 'api','prefix' => 'auth'], function ($router) {
+    Route::post('login', [AuthController::class, 'login']);
     Route::post('logout', [AuthController::class, 'logout']);
+    Route::post('register', [AuthController::class, 'register']);
+    Route::post('profile', [AuthController::class, 'profile']);
 });
