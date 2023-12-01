@@ -14,12 +14,12 @@ $(document).ready(() => {
         ajax: {
             url: "/api/employee",
             dataSrc: "",
-            // beforeSend: function (xhr) {
-            //     xhr.setRequestHeader(
-            //         "Authorization",
-            //         "Bearer " + localStorage.getItem("token")
-            //     );
-            // },
+            beforeSend: function (xhr) {
+                xhr.setRequestHeader(
+                    "Authorization",
+                    "Bearer " + localStorage.getItem("token")
+                );
+            },
         },
         order: [0, "dec"],
         // data: data,

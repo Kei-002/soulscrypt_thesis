@@ -27,7 +27,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::resource('user', UserController::class);
 Route::post('/user-update/{id}', [UserController::class, 'updateUser']);
 
-Route::resource('employee', EmployeeController::class);
+Route::group(['middleware' => ['check_role:employee,admin']], function () {
+    Route::resource('employee', EmployeeController::class);
+});
+// Route::resource('employee', EmployeeController::class);
 Route::post('/employee-update/{id}', [EmployeeController::class, 'updateEmployee']);
 
 Route::resource('relative', RelativeController::class);
