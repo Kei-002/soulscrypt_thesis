@@ -11,6 +11,7 @@ use App\Traits\HttpResponses;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class AuthController extends Controller
 {
@@ -19,7 +20,8 @@ class AuthController extends Controller
 
     public function login(Request $request)
     {
-        $request->validated($request->all());
+        // Log::alert($request);
+        // $request->validate($request->all());
 
         // if (Auth::attempt($request)) {
         //     $user = Auth::user();
