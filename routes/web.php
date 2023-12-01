@@ -18,8 +18,19 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// });
+
+Route::group(['middleware' => 'redirect.if.not.authorized:admin'], function () {
+    // Routes accessible by employees and admins, otherwise redirects to /unauthorized
+    Route::get('/dashboard', function () {
+        return view('dashboard');
+    });
+});
+
+Route::get('/unauthorized', function () {
+    return view('auth.login');
 });
 
 Route::get('/dashboard/users', function () {
