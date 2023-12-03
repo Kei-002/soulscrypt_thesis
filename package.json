@@ -16,6 +16,7 @@
         "vite": "^4.0.0"
     },
     "dependencies": {
+        "@cloudinary/url-gen": "^1.13.0",
         "leaflet": "^1.9.4"
     }
 }
