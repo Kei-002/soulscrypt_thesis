@@ -8,6 +8,7 @@ use App\Models\User;
 // use App\Http\Controllers;
 
 use App\Traits\HttpResponses;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -59,7 +60,7 @@ class AuthController extends Controller
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
-        Auth::user();
+        // Auth::user();
         return $this->createNewToken($token);
 
         // $user = User::where('email', $request->email)->first();
@@ -77,16 +78,35 @@ class AuthController extends Controller
             'last_name'=>'required',
             'email'=>'required|email|unique:users',
             'password'=>'required|confirmed',
+            'img_path'=>'mimes:jpeg,jpg,png|between:1, 6000',
         ]);
 
         $full_name = $request->first_name . " " . $request->last_name;
+        if($request->img_path) {
+            $image = $request->file('img_path')->storeOnCloudinary()->getSecurePath();
+            $user = User::create([
+                'name' => $full_name,
+                'email' => $request->email,
+                'user_type' => 'relative',
+                'password' => Hash::make($request->password),
+                'img_path' => $image
+            ]);
+        }  else {
+            $user = User::create([
+                'name' => $full_name,
+                'email' => $request->email,
+                'user_type' => 'relative',
+                'password' => Hash::make($request->password),
+            ]);
+        }
+        
 
-        $user = User::create([
-            'name' => $full_name,
-            'email' => $request->email,
-            'user_type' => 'relative',
-            'password' => Hash::make($request->password),
-        ]);
+
+        // $image = $this->uploadToCloudinary($image_name);
+
+        
+
+       
 
         $relative = Relative::create([
             'user_id' => $user->id,
@@ -111,6 +131,18 @@ class AuthController extends Controller
     {
         auth()->logout();
         return $this->success(['message'=> "User successfully logged out."]);
+    }
+
+    private function  uploadToCloudinary($image) {
+       
+        $cloudinaryResponse = Cloudinary::upload($image, [
+            // 'folder' => 'uploads', // You can customize the folder where the image will be stored
+        ]);
+
+        $publicId = $cloudinaryResponse->getPublicId();
+        $url = Cloudinary::getUrl($publicId);
+
+        return $url;
     }
 
 
